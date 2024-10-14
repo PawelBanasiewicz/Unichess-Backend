@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/openings")
-public class OpeningController {
+class OpeningController {
 
     private final OpeningService openingService;
 

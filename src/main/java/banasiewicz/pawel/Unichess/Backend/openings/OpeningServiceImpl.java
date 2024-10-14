@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class OpeningServiceImpl implements OpeningService {
+class OpeningServiceImpl implements OpeningService {
 
     private final OpeningRepository openingRepository;
 

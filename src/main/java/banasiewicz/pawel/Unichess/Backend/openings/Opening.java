@@ -6,25 +6,25 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "openings")
-public class Opening {
+class Opening {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 5)
+    @Column(nullable = false, length = 3)
     private String code;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String fen;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, unique = true)
     private String pgnMoves;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, unique = true)
     private String uciMoves;
 
     @Column(name = "insert_date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
