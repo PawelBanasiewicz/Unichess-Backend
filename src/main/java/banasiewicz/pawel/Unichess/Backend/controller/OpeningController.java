@@ -1,5 +1,8 @@
-package banasiewicz.pawel.Unichess.Backend.openings;
+package banasiewicz.pawel.Unichess.Backend.controller;
 
+
+import banasiewicz.pawel.Unichess.Backend.model.Opening;
+import banasiewicz.pawel.Unichess.Backend.service.OpeningService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/openings")
-class OpeningController {
+public class OpeningController {
 
     private final OpeningService openingService;
 

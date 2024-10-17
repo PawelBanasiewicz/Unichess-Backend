@@ -1,4 +1,4 @@
-package banasiewicz.pawel.Unichess.Backend.openings;
+package banasiewicz.pawel.Unichess.Backend.model;
 
 import jakarta.persistence.*;
 
@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "openings")
-class Opening {
+public class Opening {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

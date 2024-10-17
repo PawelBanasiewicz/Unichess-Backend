@@ -1,12 +1,14 @@
-package banasiewicz.pawel.Unichess.Backend.openings;
+package banasiewicz.pawel.Unichess.Backend.service;
 
+import banasiewicz.pawel.Unichess.Backend.model.Opening;
+import banasiewicz.pawel.Unichess.Backend.repository.OpeningRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-class OpeningServiceImpl implements OpeningService {
+public class OpeningServiceImpl implements OpeningService {
 
     private final OpeningRepository openingRepository;
 

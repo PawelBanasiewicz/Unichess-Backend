@@ -1,4 +1,4 @@
-package banasiewicz.pawel.Unichess.Backend.titles;
+package banasiewicz.pawel.Unichess.Backend.model;
 
 import jakarta.persistence.*;
 
@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "titles")
-class Title {
+public class Title {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

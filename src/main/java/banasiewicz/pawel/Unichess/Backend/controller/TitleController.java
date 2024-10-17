@@ -1,5 +1,7 @@
-package banasiewicz.pawel.Unichess.Backend.titles;
+package banasiewicz.pawel.Unichess.Backend.controller;
 
+import banasiewicz.pawel.Unichess.Backend.model.Title;
+import banasiewicz.pawel.Unichess.Backend.service.TitleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("titles")
-class TitleController {
+public class TitleController {
 
     private final TitleService titleService;
 
