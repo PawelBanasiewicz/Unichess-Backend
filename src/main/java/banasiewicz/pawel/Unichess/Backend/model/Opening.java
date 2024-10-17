@@ -1,11 +1,15 @@
 package banasiewicz.pawel.Unichess.Backend.model;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "openings")
+@EntityListeners(AuditingEntityListener.class)
 public class Opening {
 
     @Id
@@ -21,14 +25,19 @@ public class Opening {
     @Column(nullable = false)
     private String fen;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "pgn_moves", nullable = false, unique = true)
     private String pgnMoves;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "uci_moves", nullable = false, unique = true)
     private String uciMoves;
 
-    @Column(name = "insert_date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @CreatedDate
+    @Column(name = "insert_date", nullable = false, updatable = false)
     private LocalDateTime insertDate;
+
+    @LastModifiedDate
+    @Column(name = "edit_date")
+    private LocalDateTime editDate;
 
     public Long getId() {
         return id;
@@ -84,5 +93,13 @@ public class Opening {
 
     public void setInsertDate(LocalDateTime insertDate) {
         this.insertDate = insertDate;
+    }
+
+    public LocalDateTime getEditDate() {
+        return editDate;
+    }
+
+    public void setEditDate(LocalDateTime editDate) {
+        this.editDate = editDate;
     }
 }

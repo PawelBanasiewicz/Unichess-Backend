@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS titles
 	elo_threshold integer NOT NULL,
 	requires_norm boolean NOT NULL,
 	only_female boolean NOT NULL,
-	insert_date timestamp DEFAULT CURRENT_TIMESTAMP
+	insert_date timestamp DEFAULT CURRENT_TIMESTAMP,
+	edit_date timestamp DEFAULT NULL
 );
 
 INSERT INTO titles (name, abbreviation, elo_threshold, requires_norm, only_female, insert_date)

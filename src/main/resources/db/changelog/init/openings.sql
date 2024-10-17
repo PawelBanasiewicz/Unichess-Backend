@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS openings (
     fen VARCHAR(255) NOT NULL,
     pgn_moves VARCHAR(255) NOT NULL UNIQUE,
     uci_moves VARCHAR(255) NOT NULL UNIQUE,
-    insert_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    insert_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    edit_date timestamp DEFAULT NULL
 );
 
 INSERT INTO openings (code, name, fen, pgn_moves, uci_moves, insert_date) VALUES

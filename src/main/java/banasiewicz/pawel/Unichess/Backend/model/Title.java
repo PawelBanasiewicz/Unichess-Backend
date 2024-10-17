@@ -1,11 +1,15 @@
 package banasiewicz.pawel.Unichess.Backend.model;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "titles")
+@EntityListeners(AuditingEntityListener.class)
 public class Title {
 
     @Id
@@ -18,17 +22,22 @@ public class Title {
     @Column(nullable = false, unique = true)
     private String abbreviation;
 
-    @Column(nullable = false)
+    @Column(name = "elo_threshold", nullable = false)
     private Integer eloThreshold;
 
-    @Column(nullable = false)
+    @Column(name = "requires_norm", nullable = false)
     private Boolean requiresNorm;
 
-    @Column(nullable = false)
+    @Column(name = "only_female", nullable = false)
     private Boolean onlyFemale;
 
-    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @CreatedDate
+    @Column(name = "insert_date", nullable = false, updatable = false)
     private LocalDateTime insertDate;
+
+    @LastModifiedDate
+    @Column(name = "edit_date")
+    private LocalDateTime editDate;
 
     public Long getId() {
         return id;
@@ -76,5 +85,21 @@ public class Title {
 
     public void setOnlyFemale(Boolean onlyFemale) {
         this.onlyFemale = onlyFemale;
+    }
+
+    public LocalDateTime getInsertDate() {
+        return insertDate;
+    }
+
+    public void setInsertDate(LocalDateTime insertDate) {
+        this.insertDate = insertDate;
+    }
+
+    public LocalDateTime getEditDate() {
+        return editDate;
+    }
+
+    public void setEditDate(LocalDateTime editDate) {
+        this.editDate = editDate;
     }
 }
