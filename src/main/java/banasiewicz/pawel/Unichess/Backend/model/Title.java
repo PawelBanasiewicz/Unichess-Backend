@@ -31,6 +31,9 @@ public class Title {
     @Column(name = "only_female", nullable = false)
     private Boolean onlyFemale;
 
+    @Column(name = "introduction_year", nullable = false)
+    private Integer introductionYear;
+
     @CreatedDate
     @Column(name = "insert_date", nullable = false, updatable = false)
     private LocalDateTime insertDate;
@@ -85,6 +88,14 @@ public class Title {
 
     public void setOnlyFemale(Boolean onlyFemale) {
         this.onlyFemale = onlyFemale;
+    }
+
+    public Integer getIntroductionYear() {
+        return introductionYear;
+    }
+
+    public void setIntroductionYear(Integer introductionYear) {
+        this.introductionYear = introductionYear;
     }
 
     public LocalDateTime getInsertDate() {
