@@ -6,6 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "titles")
@@ -30,6 +31,9 @@ public class Title {
 
     @Column(name = "only_female", nullable = false)
     private Boolean onlyFemale;
+
+    @OneToMany(mappedBy = "title")
+    private List<Player> players;
 
     @Column(name = "introduction_year", nullable = false)
     private Integer introductionYear;
@@ -88,6 +92,14 @@ public class Title {
 
     public void setOnlyFemale(Boolean onlyFemale) {
         this.onlyFemale = onlyFemale;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
     }
 
     public Integer getIntroductionYear() {
