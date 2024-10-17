@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("titles")
+@RequestMapping("/titles")
 public class TitleController {
 
     private final TitleService titleService;
