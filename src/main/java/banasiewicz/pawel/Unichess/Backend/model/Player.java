@@ -1,5 +1,6 @@
 package banasiewicz.pawel.Unichess.Backend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -33,6 +34,7 @@ public class Player {
     private String nationality;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "title_id", nullable = false)
     private Title title;
 
@@ -47,7 +49,7 @@ public class Player {
     @LastModifiedDate
     private LocalDateTime editDate;
 
-    private enum Sex {
+    public enum Sex {
         MALE, FEMALE
     }
 

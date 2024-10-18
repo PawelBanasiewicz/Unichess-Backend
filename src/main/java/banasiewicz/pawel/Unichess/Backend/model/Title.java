@@ -1,5 +1,6 @@
 package banasiewicz.pawel.Unichess.Backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -32,7 +33,8 @@ public class Title {
     @Column(name = "only_female", nullable = false)
     private Boolean onlyFemale;
 
-    @OneToMany(mappedBy = "title")
+    @OneToMany(mappedBy = "title", fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<Player> players;
 
     @Column(name = "introduction_year", nullable = false)
