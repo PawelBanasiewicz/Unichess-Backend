@@ -1,6 +1,6 @@
 package banasiewicz.pawel.Unichess.Backend.service;
 
-import banasiewicz.pawel.Unichess.Backend.model.Title;
+import banasiewicz.pawel.Unichess.Backend.dto.TitleDto;
 import banasiewicz.pawel.Unichess.Backend.repository.TitleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,9 @@ public class TitleServiceImpl implements TitleService {
     }
 
     @Override
-    public List<Title> getTitles() {
-        return titleRepository.findAll();
+    public List<TitleDto> getTitles() {
+        return titleRepository.findAll().stream()
+                .map(TitleDto::from)
+                .toList();
     }
 }

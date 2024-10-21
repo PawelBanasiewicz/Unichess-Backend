@@ -1,10 +1,10 @@
 package banasiewicz.pawel.Unichess.Backend.service;
 
-import banasiewicz.pawel.Unichess.Backend.model.Opening;
+import banasiewicz.pawel.Unichess.Backend.dto.OpeningDto;
 
 import java.util.List;
 
 public interface OpeningService {
 
-    List<Opening> getOpenings();
+    List<OpeningDto> getOpenings();
 }

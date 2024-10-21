@@ -2,6 +2,10 @@ package banasiewicz.pawel.Unichess.Backend.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -18,18 +22,24 @@ public class Title {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     @Column(nullable = false, unique = true)
     private String name;
 
+    @NotBlank
+    @Size(min = 2, max = 3)
     @Column(nullable = false, unique = true)
     private String abbreviation;
 
+    @NotNull
     @Column(name = "elo_threshold", nullable = false)
     private Integer eloThreshold;
 
+    @NotNull
     @Column(name = "requires_norm", nullable = false)
     private Boolean requiresNorm;
 
+    @NotNull
     @Column(name = "only_female", nullable = false)
     private Boolean onlyFemale;
 
@@ -37,6 +47,7 @@ public class Title {
     @JsonBackReference
     private List<Player> players;
 
+    @Min(1)
     @Column(name = "introduction_year", nullable = false)
     private Integer introductionYear;
 
@@ -56,43 +67,43 @@ public class Title {
         this.id = id;
     }
 
-    public String getName() {
+    public @NotBlank String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NotBlank String name) {
         this.name = name;
     }
 
-    public String getAbbreviation() {
+    public @NotBlank @Size(min = 2, max = 3) String getAbbreviation() {
         return abbreviation;
     }
 
-    public void setAbbreviation(String abbreviation) {
+    public void setAbbreviation(@NotBlank @Size(min = 2, max = 3) String abbreviation) {
         this.abbreviation = abbreviation;
     }
 
-    public Integer getEloThreshold() {
+    public @NotNull Integer getEloThreshold() {
         return eloThreshold;
     }
 
-    public void setEloThreshold(Integer eloThreshold) {
+    public void setEloThreshold(@NotNull Integer eloThreshold) {
         this.eloThreshold = eloThreshold;
     }
 
-    public Boolean getRequiresNorm() {
+    public @NotNull Boolean getRequiresNorm() {
         return requiresNorm;
     }
 
-    public void setRequiresNorm(Boolean requiresNorm) {
+    public void setRequiresNorm(@NotNull Boolean requiresNorm) {
         this.requiresNorm = requiresNorm;
     }
 
-    public Boolean getOnlyFemale() {
+    public @NotNull Boolean getOnlyFemale() {
         return onlyFemale;
     }
 
-    public void setOnlyFemale(Boolean onlyFemale) {
+    public void setOnlyFemale(@NotNull Boolean onlyFemale) {
         this.onlyFemale = onlyFemale;
     }
 
@@ -104,11 +115,11 @@ public class Title {
         this.players = players;
     }
 
-    public Integer getIntroductionYear() {
+    public @Min(1) Integer getIntroductionYear() {
         return introductionYear;
     }
 
-    public void setIntroductionYear(Integer introductionYear) {
+    public void setIntroductionYear(@Min(1) Integer introductionYear) {
         this.introductionYear = introductionYear;
     }
 

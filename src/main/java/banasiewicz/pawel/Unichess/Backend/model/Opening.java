@@ -1,6 +1,8 @@
 package banasiewicz.pawel.Unichess.Backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -16,18 +18,24 @@ public class Opening {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
+    @Size(min = 3, max = 3)
     @Column(nullable = false, length = 3)
     private String code;
 
+    @NotBlank
     @Column(nullable = false, unique = true)
     private String name;
 
+    @NotBlank
     @Column(nullable = false)
     private String fen;
 
+    @NotBlank
     @Column(name = "pgn_moves", nullable = false, unique = true)
     private String pgnMoves;
 
+    @NotBlank
     @Column(name = "uci_moves", nullable = false, unique = true)
     private String uciMoves;
 
@@ -47,43 +55,43 @@ public class Opening {
         this.id = id;
     }
 
-    public String getCode() {
+    public @NotBlank @Size(min = 3, max = 3) String getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(@NotBlank @Size(min = 3, max = 3) String code) {
         this.code = code;
     }
 
-    public String getName() {
+    public @NotBlank String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NotBlank String name) {
         this.name = name;
     }
 
-    public String getFen() {
+    public @NotBlank String getFen() {
         return fen;
     }
 
-    public void setFen(String fen) {
+    public void setFen(@NotBlank String fen) {
         this.fen = fen;
     }
 
-    public String getPgnMoves() {
+    public @NotBlank String getPgnMoves() {
         return pgnMoves;
     }
 
-    public void setPgnMoves(String pgnMoves) {
+    public void setPgnMoves(@NotBlank String pgnMoves) {
         this.pgnMoves = pgnMoves;
     }
 
-    public String getUciMoves() {
+    public @NotBlank String getUciMoves() {
         return uciMoves;
     }
 
-    public void setUciMoves(String uciMoves) {
+    public void setUciMoves(@NotBlank String uciMoves) {
         this.uciMoves = uciMoves;
     }
 

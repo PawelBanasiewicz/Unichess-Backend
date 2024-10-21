@@ -15,7 +15,8 @@ public record PlayerDto(Long id,
                         Integer eloRating) {
 
     public static PlayerDto from(final @NotNull Player player) {
-        return new PlayerDto(player.getId(),
+        return new PlayerDto(
+                player.getId(),
                 player.getFirstName(),
                 player.getLastName(),
                 player.getBirthDate(),

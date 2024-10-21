@@ -1,6 +1,6 @@
 package banasiewicz.pawel.Unichess.Backend.controller;
 
-import banasiewicz.pawel.Unichess.Backend.model.Title;
+import banasiewicz.pawel.Unichess.Backend.dto.TitleDto;
 import banasiewicz.pawel.Unichess.Backend.service.TitleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +21,7 @@ public class TitleController {
     }
 
     @GetMapping
-    public List<Title> getTitles() {
+    public List<TitleDto> getTitles() {
         return titleService.getTitles();
     }
 }
