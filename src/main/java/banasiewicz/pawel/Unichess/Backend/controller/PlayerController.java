@@ -1,6 +1,6 @@
 package banasiewicz.pawel.Unichess.Backend.controller;
 
-import banasiewicz.pawel.Unichess.Backend.model.Player;
+import banasiewicz.pawel.Unichess.Backend.dto.PlayerDto;
 import banasiewicz.pawel.Unichess.Backend.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +21,7 @@ public class PlayerController {
     }
 
     @GetMapping
-    public List<Player> getPlayers() {
+    public List<PlayerDto> getPlayers() {
         return playerService.getPlayers();
     }
 }

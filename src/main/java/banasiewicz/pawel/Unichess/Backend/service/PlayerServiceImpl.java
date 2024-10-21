@@ -1,6 +1,6 @@
 package banasiewicz.pawel.Unichess.Backend.service;
 
-import banasiewicz.pawel.Unichess.Backend.model.Player;
+import banasiewicz.pawel.Unichess.Backend.dto.PlayerDto;
 import banasiewicz.pawel.Unichess.Backend.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,9 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List<Player> getPlayers() {
-        return playerRepository.findAll();
+    public List<PlayerDto> getPlayers() {
+        return playerRepository.findAll().stream()
+                .map(PlayerDto::from)
+                .toList();
     }
 }
