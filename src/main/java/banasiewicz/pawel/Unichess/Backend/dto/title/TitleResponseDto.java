@@ -1,9 +1,9 @@
-package banasiewicz.pawel.Unichess.Backend.dto;
+package banasiewicz.pawel.Unichess.Backend.dto.title;
 
 import banasiewicz.pawel.Unichess.Backend.model.Title;
 import jakarta.validation.constraints.NotNull;
 
-public record TitleDto (
+public record TitleResponseDto(
         Long id,
         String name,
         String abbreviation,
@@ -12,8 +12,8 @@ public record TitleDto (
         Boolean onlyFemale,
         Integer introductionYear
 ) {
-    public static TitleDto from(final @NotNull Title title) {
-        return new TitleDto(
+    public static TitleResponseDto from(final @NotNull Title title) {
+        return new TitleResponseDto(
                 title.getId(),
                 title.getName(),
                 title.getAbbreviation(),

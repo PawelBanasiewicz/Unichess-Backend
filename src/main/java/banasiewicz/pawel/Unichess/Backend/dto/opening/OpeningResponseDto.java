@@ -1,9 +1,9 @@
-package banasiewicz.pawel.Unichess.Backend.dto;
+package banasiewicz.pawel.Unichess.Backend.dto.opening;
 
 import banasiewicz.pawel.Unichess.Backend.model.Opening;
 import jakarta.validation.constraints.NotNull;
 
-public record OpeningDto (
+public record OpeningResponseDto(
         Long id,
         String code,
         String name,
@@ -11,8 +11,8 @@ public record OpeningDto (
         String pgnMoves,
         String uciMoves
 ) {
-    public static OpeningDto from(final @NotNull Opening opening) {
-        return new OpeningDto(
+    public static OpeningResponseDto from(final @NotNull Opening opening) {
+        return new OpeningResponseDto(
                 opening.getId(),
                 opening.getCode(),
                 opening.getName(),

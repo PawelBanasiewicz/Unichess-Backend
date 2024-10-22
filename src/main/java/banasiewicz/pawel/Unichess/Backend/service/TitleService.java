@@ -1,10 +1,13 @@
 package banasiewicz.pawel.Unichess.Backend.service;
 
 
-import banasiewicz.pawel.Unichess.Backend.dto.TitleDto;
+import banasiewicz.pawel.Unichess.Backend.dto.title.TitleResponseDto;
 
 import java.util.List;
 
 public interface TitleService {
-    List<TitleDto> getTitles();
+
+    List<TitleResponseDto> getTitles();
+
+    TitleResponseDto getTitleResponseByAbbreviation(final String abbreviation);
 }

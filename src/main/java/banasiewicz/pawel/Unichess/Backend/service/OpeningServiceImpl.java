@@ -1,6 +1,6 @@
 package banasiewicz.pawel.Unichess.Backend.service;
 
-import banasiewicz.pawel.Unichess.Backend.dto.OpeningDto;
+import banasiewicz.pawel.Unichess.Backend.dto.opening.OpeningResponseDto;
 import banasiewicz.pawel.Unichess.Backend.repository.OpeningRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +18,9 @@ public class OpeningServiceImpl implements OpeningService {
     }
 
     @Override
-    public List<OpeningDto> getOpenings() {
+    public List<OpeningResponseDto> getOpenings() {
         return openingRepository.findAll().stream()
-                .map(OpeningDto::from)
+                .map(OpeningResponseDto::from)
                 .toList();
     }
 }

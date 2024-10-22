@@ -1,7 +1,7 @@
 package banasiewicz.pawel.Unichess.Backend.controller;
 
 
-import banasiewicz.pawel.Unichess.Backend.dto.OpeningDto;
+import banasiewicz.pawel.Unichess.Backend.dto.opening.OpeningResponseDto;
 import banasiewicz.pawel.Unichess.Backend.service.OpeningService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ public class OpeningController {
     }
 
     @GetMapping
-    public List<OpeningDto> getOpenings() {
+    public List<OpeningResponseDto> getOpenings() {
         return openingService.getOpenings();
     }
 }

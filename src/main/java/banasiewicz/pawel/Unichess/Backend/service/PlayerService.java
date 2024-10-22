@@ -1,10 +1,15 @@
 package banasiewicz.pawel.Unichess.Backend.service;
 
-import banasiewicz.pawel.Unichess.Backend.dto.PlayerDto;
+import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerCreateDto;
+import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerResponseDto;
 
 import java.util.List;
 
 public interface PlayerService {
 
-    List<PlayerDto> getPlayers();
+    List<PlayerResponseDto> getPlayers();
+
+    PlayerResponseDto getPlayerById(final Long id);
+
+    PlayerResponseDto addPlayer(final PlayerCreateDto playerCreateDto);
 }

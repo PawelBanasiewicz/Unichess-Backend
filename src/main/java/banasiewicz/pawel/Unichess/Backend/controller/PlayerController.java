@@ -1,11 +1,11 @@
 package banasiewicz.pawel.Unichess.Backend.controller;
 
-import banasiewicz.pawel.Unichess.Backend.dto.PlayerDto;
+import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerCreateDto;
+import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerResponseDto;
 import banasiewicz.pawel.Unichess.Backend.service.PlayerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,7 +21,17 @@ public class PlayerController {
     }
 
     @GetMapping
-    public List<PlayerDto> getPlayers() {
+    public List<PlayerResponseDto> getPlayers() {
         return playerService.getPlayers();
+    }
+
+    @GetMapping("/{id}")
+    public PlayerResponseDto getPlayerById(final @PathVariable Long id) {
+        return playerService.getPlayerById(id);
+    }
+
+    @PostMapping
+    public PlayerResponseDto addPlayer(final @Valid @RequestBody PlayerCreateDto playerCreateDto) {
+        return playerService.addPlayer(playerCreateDto);
     }
 }
