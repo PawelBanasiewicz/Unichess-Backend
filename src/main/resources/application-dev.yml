@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: Unichess-Backend
+  datasource:
+    url: jdbc:postgresql://localhost:5432/unichess_dev
+    username: unichess_dev
+    password: unichess_dev
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    defer-datasource-initialization: true
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/db.changelog-dev.xml
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:/devInit/data.sql
+  logging:
+    level:
+      liquibase: TRACE
+      org.springframework.jdbc.datasource.init: TRACE
+      org.springframework.boot.sql.init: TRACE
+      org.hibernate.SQL: TRACE
+      org.springframework: TRACE
+      org.hibernate.type.descriptor.sql.BasicBinder: TRACE

@@ -11,10 +11,11 @@ spring:
       ddl-auto: validate
     show-sql: true
   liquibase:
+    enabled: true
     change-log: classpath:db/changelog/db.changelog-stg.xml
   logging:
     level:
       liquibase: DEBUG
       org.hibernate.SQL: DEBUG
-      org.springframework: TRACE
-      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+      org.springframework: DEBUG
+      org.hibernate.type.descriptor.sql.BasicBinder: DEBUG

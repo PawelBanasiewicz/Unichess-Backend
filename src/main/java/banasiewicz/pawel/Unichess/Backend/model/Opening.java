@@ -24,7 +24,7 @@ public class Opening {
     private String code;
 
     @NotBlank
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @NotBlank
