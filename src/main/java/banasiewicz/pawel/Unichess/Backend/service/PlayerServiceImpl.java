@@ -2,6 +2,8 @@ package banasiewicz.pawel.Unichess.Backend.service;
 
 import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerCreateDto;
 import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerResponseDto;
+import banasiewicz.pawel.Unichess.Backend.exception.player.PlayerError;
+import banasiewicz.pawel.Unichess.Backend.exception.player.PlayerException;
 import banasiewicz.pawel.Unichess.Backend.model.Player;
 import banasiewicz.pawel.Unichess.Backend.model.Title;
 import banasiewicz.pawel.Unichess.Backend.repository.PlayerRepository;
@@ -33,9 +35,9 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public PlayerResponseDto getPlayerById(Long id) {
+    public PlayerResponseDto getPlayerById(final Long id) {
         final Player player = playerRepository.findById(id)
-                .orElseThrow(() -> new EntityExistsException("Player not found. Id: " + id));
+                .orElseThrow(() -> new PlayerException(PlayerError.PLAYER_NOT_FOUND, id));
         return PlayerResponseDto.from(player);
     }
 
