@@ -4,11 +4,12 @@ import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerCreateDto;
 import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerResponseDto;
 import banasiewicz.pawel.Unichess.Backend.exception.player.PlayerError;
 import banasiewicz.pawel.Unichess.Backend.exception.player.PlayerException;
+import banasiewicz.pawel.Unichess.Backend.exception.title.TitleError;
+import banasiewicz.pawel.Unichess.Backend.exception.title.TitleException;
 import banasiewicz.pawel.Unichess.Backend.model.Player;
 import banasiewicz.pawel.Unichess.Backend.model.Title;
 import banasiewicz.pawel.Unichess.Backend.repository.PlayerRepository;
 import banasiewicz.pawel.Unichess.Backend.repository.TitleRepository;
-import jakarta.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,12 +69,12 @@ public class PlayerServiceImpl implements PlayerService {
         }
     }
 
-    private Title loadPlayerTitle(final String title) {
-        if (title == null) {
+    private Title loadPlayerTitle(final String titleAbbreviation) {
+        if (titleAbbreviation == null) {
             return null;
         }
 
-        return titleRepository.findByAbbreviationIgnoreCase(title)
-                .orElseThrow(() -> new EntityExistsException("Title not found with abbreviation: " + title));
+        return titleRepository.findByAbbreviationIgnoreCase(titleAbbreviation)
+                .orElseThrow(() -> new TitleException(TitleError.TITLE_NOT_FOUND, titleAbbreviation));
     }
 }
