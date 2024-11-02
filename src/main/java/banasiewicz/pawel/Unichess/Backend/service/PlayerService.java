@@ -12,4 +12,6 @@ public interface PlayerService {
     PlayerResponseDto getPlayerById(final Long id);
 
     PlayerResponseDto addPlayer(final PlayerCreateDto playerCreateDto);
+
+    void deletePlayer(final Long id);
 }

@@ -45,7 +45,6 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public PlayerResponseDto addPlayer(final PlayerCreateDto playerCreateDto) {
-
         checkPlayerExistence(playerCreateDto.firstName(), playerCreateDto.lastName(), playerCreateDto.birthDate());
 
         Player player = new Player();
@@ -59,6 +58,13 @@ public class PlayerServiceImpl implements PlayerService {
 
         final Player savedPlayer = playerRepository.save(player);
         return PlayerResponseDto.from(savedPlayer);
+    }
+
+    @Override
+    public void deletePlayer(Long id) {
+        playerRepository.findById(id)
+                .orElseThrow(() -> new PlayerException(PlayerError.PLAYER_NOT_FOUND, id));
+        playerRepository.deleteById(id);
     }
 
     private void checkPlayerExistence(final String firstName, final String lastName, final LocalDate birthDate) {

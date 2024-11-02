@@ -5,6 +5,7 @@ import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerResponseDto;
 import banasiewicz.pawel.Unichess.Backend.service.PlayerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,5 +34,11 @@ public class PlayerController {
     @PostMapping
     public PlayerResponseDto addPlayer(final @Valid @RequestBody PlayerCreateDto playerCreateDto) {
         return playerService.addPlayer(playerCreateDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePlayer(final @PathVariable Long id) {
+        playerService.deletePlayer(id);
+        return ResponseEntity.noContent().build();
     }
 }
