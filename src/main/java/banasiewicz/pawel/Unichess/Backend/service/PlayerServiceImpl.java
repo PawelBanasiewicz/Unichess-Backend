@@ -69,12 +69,12 @@ public class PlayerServiceImpl implements PlayerService {
         }
     }
 
-    private Title loadPlayerTitle(final String titleAbbreviation) {
-        if (titleAbbreviation == null) {
+    private Title loadPlayerTitle(final String title) {
+        if (title == null) {
             return null;
         }
 
-        return titleRepository.findByAbbreviationIgnoreCase(titleAbbreviation)
-                .orElseThrow(() -> new TitleException(TitleError.TITLE_NOT_FOUND, titleAbbreviation));
+        return titleRepository.findByNameOrAbbreviationIgnoreCase(title)
+                .orElseThrow(() -> new TitleException(TitleError.TITLE_NOT_FOUND, title));
     }
 }

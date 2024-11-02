@@ -29,7 +29,7 @@ public class TitleServiceImpl implements TitleService {
 
     @Override
     public TitleResponseDto getTitleResponseByAbbreviation(final String abbreviation) {
-        final Title title = titleRepository.findByAbbreviationIgnoreCase(abbreviation)
+        final Title title = titleRepository.findByNameOrAbbreviationIgnoreCase(abbreviation)
                 .orElseThrow(() -> new TitleException(TitleError.TITLE_NOT_FOUND, abbreviation));
         return TitleResponseDto.from(title);
     }
