@@ -10,4 +10,5 @@ CREATE TABLE IF NOT EXISTS players
     elo_rating INT NOT NULL,
     insert_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     edit_date TIMESTAMP DEFAULT NULL
+    UNIQUE (first_name, last_name, birth_date)
 );
