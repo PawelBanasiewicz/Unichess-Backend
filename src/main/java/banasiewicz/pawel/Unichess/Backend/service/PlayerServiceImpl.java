@@ -47,16 +47,13 @@ public class PlayerServiceImpl implements PlayerService {
 
         checkPlayerExistence(playerCreateDto.firstName(), playerCreateDto.lastName(), playerCreateDto.birthDate());
 
-        final Title title = titleRepository.findByAbbreviationIgnoreCase(playerCreateDto.title())
-                .orElseThrow(() -> new EntityExistsException("Title not found with abbreviation: " + playerCreateDto.title()));
-
         Player player = new Player();
         player.setFirstName(playerCreateDto.firstName());
         player.setLastName(playerCreateDto.lastName());
         player.setBirthDate(playerCreateDto.birthDate());
         player.setSex(playerCreateDto.sex());
         player.setNationality(playerCreateDto.nationality());
-        player.setTitle(title);
+        player.setTitle(loadPlayerTitle(playerCreateDto.title()));
         player.setEloRating(playerCreateDto.eloRating());
 
         final Player savedPlayer = playerRepository.save(player);
@@ -69,5 +66,14 @@ public class PlayerServiceImpl implements PlayerService {
         if (playerAlreadyExists) {
             throw new PlayerException(PlayerError.PLAYER_ALREADY_EXIST, firstName, lastName, birthDate);
         }
+    }
+
+    private Title loadPlayerTitle(final String title) {
+        if (title == null) {
+            return null;
+        }
+
+        return titleRepository.findByAbbreviationIgnoreCase(title)
+                .orElseThrow(() -> new EntityExistsException("Title not found with abbreviation: " + title));
     }
 }

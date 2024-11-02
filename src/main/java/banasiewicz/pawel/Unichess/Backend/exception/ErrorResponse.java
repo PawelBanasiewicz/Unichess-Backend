@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 record ErrorResponse(String errorCode,
                      String message,
-                     LocalDateTime localDateTime) {
+                     LocalDateTime timestamp) {
 
     public static ErrorResponse buildErrorResponse(final String errorCode, final String message) {
         return new ErrorResponse(errorCode, message, LocalDateTime.now());

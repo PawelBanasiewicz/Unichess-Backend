@@ -33,14 +33,13 @@ public class Player {
     private String lastName;
 
     @PastOrPresent
-    @Column(name = "birth_date")
+    @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
 
     @Enumerated(EnumType.STRING)
     @Column
     private Sex sex;
 
-    @NotBlank
     @Column
     private String nationality;
 
@@ -106,11 +105,11 @@ public class Player {
         this.sex = sex;
     }
 
-    public @NotBlank String getNationality() {
+    public String getNationality() {
         return nationality;
     }
 
-    public void setNationality(@NotBlank String nationality) {
+    public void setNationality(String nationality) {
         this.nationality = nationality;
     }
 
