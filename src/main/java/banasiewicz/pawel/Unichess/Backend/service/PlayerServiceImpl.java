@@ -12,6 +12,7 @@ import jakarta.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -44,20 +45,29 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public PlayerResponseDto addPlayer(final PlayerCreateDto playerCreateDto) {
 
-        final Title title = titleRepository.findByAbbreviationIgnoreCase(playerCreateDto.getTitle())
-                .orElseThrow(() -> new EntityExistsException("Title not found with abbreviation: " + playerCreateDto.getTitle()));
+        checkPlayerExistence(playerCreateDto.firstName(), playerCreateDto.lastName(), playerCreateDto.birthDate());
+
+        final Title title = titleRepository.findByAbbreviationIgnoreCase(playerCreateDto.title())
+                .orElseThrow(() -> new EntityExistsException("Title not found with abbreviation: " + playerCreateDto.title()));
 
         Player player = new Player();
-        player.setFirstName(playerCreateDto.getFirstName());
-        player.setFirstName(playerCreateDto.getFirstName());
-        player.setLastName(playerCreateDto.getLastName());
-        player.setBirthDate(playerCreateDto.getBirthDate());
-        player.setSex(playerCreateDto.getSex());
-        player.setNationality(playerCreateDto.getNationality());
+        player.setFirstName(playerCreateDto.firstName());
+        player.setLastName(playerCreateDto.lastName());
+        player.setBirthDate(playerCreateDto.birthDate());
+        player.setSex(playerCreateDto.sex());
+        player.setNationality(playerCreateDto.nationality());
         player.setTitle(title);
-        player.setEloRating(playerCreateDto.getEloRating());
+        player.setEloRating(playerCreateDto.eloRating());
 
         final Player savedPlayer = playerRepository.save(player);
         return PlayerResponseDto.from(savedPlayer);
+    }
+
+    private void checkPlayerExistence(final String firstName, final String lastName, final LocalDate birthDate) {
+        final boolean playerAlreadyExists = playerRepository.existsByFirstNameAndLastNameAndBirthDate(firstName, lastName, birthDate);
+
+        if (playerAlreadyExists) {
+            throw new PlayerException(PlayerError.PLAYER_ALREADY_EXIST, firstName, lastName, birthDate);
+        }
     }
 }
