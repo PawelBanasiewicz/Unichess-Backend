@@ -65,6 +65,20 @@ public class Player {
         MALE, FEMALE
     }
 
+    public Player() {
+    }
+
+    public Player(String firstName, String lastName, LocalDate birthDate, Sex sex,
+                  String nationality, Title title, Integer eloRating) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.sex = sex;
+        this.nationality = nationality;
+        this.title = title;
+        this.eloRating = eloRating;
+    }
+
     public Long getId() {
         return id;
     }

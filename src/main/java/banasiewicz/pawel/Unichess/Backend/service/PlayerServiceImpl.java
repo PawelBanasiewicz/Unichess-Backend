@@ -47,16 +47,17 @@ public class PlayerServiceImpl implements PlayerService {
     public PlayerResponseDto addPlayer(final PlayerCreateDto playerCreateDto) {
         checkPlayerExistence(playerCreateDto.firstName(), playerCreateDto.lastName(), playerCreateDto.birthDate());
 
-        Player player = new Player();
-        player.setFirstName(playerCreateDto.firstName());
-        player.setLastName(playerCreateDto.lastName());
-        player.setBirthDate(playerCreateDto.birthDate());
-        player.setSex(playerCreateDto.sex());
-        player.setNationality(playerCreateDto.nationality());
-        player.setTitle(loadPlayerTitle(playerCreateDto.title()));
-        player.setEloRating(playerCreateDto.eloRating());
+        final Player playerToSave = new Player(
+                playerCreateDto.firstName(),
+                playerCreateDto.lastName(),
+                playerCreateDto.birthDate(),
+                playerCreateDto.sex(),
+                playerCreateDto.nationality(),
+                loadPlayerTitle(playerCreateDto.title()),
+                playerCreateDto.eloRating()
+        );
 
-        final Player savedPlayer = playerRepository.save(player);
+        final Player savedPlayer = playerRepository.save(playerToSave);
         return PlayerResponseDto.from(savedPlayer);
     }
 
