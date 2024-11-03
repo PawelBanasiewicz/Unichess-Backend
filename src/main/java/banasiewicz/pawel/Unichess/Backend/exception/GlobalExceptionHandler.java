@@ -1,7 +1,5 @@
 package banasiewicz.pawel.Unichess.Backend.exception;
 
-import banasiewicz.pawel.Unichess.Backend.exception.player.PlayerException;
-import banasiewicz.pawel.Unichess.Backend.exception.title.TitleException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -13,8 +11,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Locale;
 import java.util.stream.Collectors;
-
-import static banasiewicz.pawel.Unichess.Backend.exception.ErrorResponse.buildErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -32,34 +28,24 @@ public class GlobalExceptionHandler {
                 .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
                 .collect(Collectors.joining(", "));
 
-        final ErrorResponse errorResponse = ErrorResponse.buildErrorResponse("VALIDATION_ERROR", message);
+        final ErrorResponse errorResponse = ErrorResponse.build("VALIDATION_ERROR", message);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(final HttpMessageNotReadableException e) {
         final String message = e.getMessage();
-        final ErrorResponse errorResponse = ErrorResponse.buildErrorResponse("JSON_PARSE_ERROR", message);
+        final ErrorResponse errorResponse = ErrorResponse.build("JSON_PARSE_ERROR", message);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handlePlayerException(final PlayerException e, final Locale locale) {
-        final String message = messageSource.getMessage(e.getPlayerError().getMessageKey(), e.getParams(), locale);
-        final String errorCode = e.getPlayerError().name();
-        final HttpStatus httpStatus = e.getPlayerError().getHttpStatus();
+    public ResponseEntity<ErrorResponse> handleDomainException(final DomainException e, final Locale locale) {
+        final String message = messageSource.getMessage(e.getErrorType().getMessageKey(), e.getParams(), locale);
+        final String errorCode = e.getErrorType().name();
+        final HttpStatus httpStatus = e.getErrorType().getHttpStatus();
 
-        final ErrorResponse errorResponse = buildErrorResponse(errorCode, message);
-        return ResponseEntity.status(httpStatus).body(errorResponse);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleTitleException(final TitleException e, final Locale locale) {
-        final String message = messageSource.getMessage(e.getTitleError().getMessageKey(), e.getParams(), locale);
-        final String errorCode = e.getTitleError().name();
-        final HttpStatus httpStatus = e.getTitleError().getHttpStatus();
-
-        final ErrorResponse errorResponse = buildErrorResponse(errorCode, message);
+        final ErrorResponse errorResponse = ErrorResponse.build(errorCode, message);
         return ResponseEntity.status(httpStatus).body(errorResponse);
     }
 }

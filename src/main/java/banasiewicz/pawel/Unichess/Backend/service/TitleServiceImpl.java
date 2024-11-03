@@ -1,8 +1,8 @@
 package banasiewicz.pawel.Unichess.Backend.service;
 
 import banasiewicz.pawel.Unichess.Backend.dto.title.TitleResponseDto;
-import banasiewicz.pawel.Unichess.Backend.exception.title.TitleError;
-import banasiewicz.pawel.Unichess.Backend.exception.title.TitleException;
+import banasiewicz.pawel.Unichess.Backend.exception.DomainException;
+import banasiewicz.pawel.Unichess.Backend.exception.ErrorType;
 import banasiewicz.pawel.Unichess.Backend.model.Title;
 import banasiewicz.pawel.Unichess.Backend.repository.TitleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class TitleServiceImpl implements TitleService {
     @Override
     public TitleResponseDto getTitleResponseByAbbreviation(final String abbreviation) {
         final Title title = titleRepository.findByNameOrAbbreviationIgnoreCase(abbreviation)
-                .orElseThrow(() -> new TitleException(TitleError.TITLE_NOT_FOUND, abbreviation));
+                .orElseThrow(() -> new DomainException(ErrorType.TITLE_NOT_FOUND, abbreviation));
         return TitleResponseDto.from(title);
     }
 }

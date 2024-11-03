@@ -3,10 +3,8 @@ package banasiewicz.pawel.Unichess.Backend.service;
 import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerCreateDto;
 import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerPatchDto;
 import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerResponseDto;
-import banasiewicz.pawel.Unichess.Backend.exception.player.PlayerError;
-import banasiewicz.pawel.Unichess.Backend.exception.player.PlayerException;
-import banasiewicz.pawel.Unichess.Backend.exception.title.TitleError;
-import banasiewicz.pawel.Unichess.Backend.exception.title.TitleException;
+import banasiewicz.pawel.Unichess.Backend.exception.DomainException;
+import banasiewicz.pawel.Unichess.Backend.exception.ErrorType;
 import banasiewicz.pawel.Unichess.Backend.model.Player;
 import banasiewicz.pawel.Unichess.Backend.model.Title;
 import banasiewicz.pawel.Unichess.Backend.repository.PlayerRepository;
@@ -42,7 +40,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public PlayerResponseDto getPlayerById(final Long id) {
         final Player player = playerRepository.findById(id)
-                .orElseThrow(() -> new PlayerException(PlayerError.PLAYER_NOT_FOUND, id));
+                .orElseThrow(() -> new DomainException(ErrorType.PLAYER_NOT_FOUND, id));
         return PlayerResponseDto.from(player);
     }
 
@@ -83,7 +81,7 @@ public class PlayerServiceImpl implements PlayerService {
 
                     final Player savedPlayer = playerRepository.save(playerFromDatabase);
                     return PlayerResponseDto.from(savedPlayer);
-                }).orElseThrow(() -> new PlayerException(PlayerError.PLAYER_NOT_FOUND, id));
+                }).orElseThrow(() -> new DomainException(ErrorType.PLAYER_NOT_FOUND, id));
     }
 
     @Override
@@ -126,14 +124,14 @@ public class PlayerServiceImpl implements PlayerService {
                     playerRepository.save(playerFromDatabase);
                     return PlayerResponseDto.from(playerFromDatabase);
 
-                }).orElseThrow(() -> new PlayerException(PlayerError.PLAYER_NOT_FOUND, id));
+                }).orElseThrow(() -> new DomainException(ErrorType.PLAYER_NOT_FOUND, id));
     }
 
     @Override
     @Transactional
     public void deletePlayer(final Long id) {
         playerRepository.findById(id)
-                .orElseThrow(() -> new PlayerException(PlayerError.PLAYER_NOT_FOUND, id));
+                .orElseThrow(() -> new DomainException(ErrorType.PLAYER_NOT_FOUND, id));
         playerRepository.deleteById(id);
     }
 
@@ -141,7 +139,7 @@ public class PlayerServiceImpl implements PlayerService {
         final boolean playerAlreadyExists = playerRepository.existsByFirstNameAndLastNameAndBirthDate(firstName, lastName, birthDate);
 
         if (playerAlreadyExists) {
-            throw new PlayerException(PlayerError.PLAYER_ALREADY_EXIST, firstName, lastName, birthDate);
+            throw new DomainException(ErrorType.PLAYER_ALREADY_EXIST, firstName, lastName, birthDate);
         }
     }
 
@@ -149,7 +147,7 @@ public class PlayerServiceImpl implements PlayerService {
         final boolean playerAlreadyExists = playerRepository.existsByFirstNameAndLastNameAndBirthDateExcludingId(id, firstName, lastName, birthDate);
 
         if (playerAlreadyExists) {
-            throw new PlayerException(PlayerError.PLAYER_ALREADY_EXIST, firstName, lastName, birthDate);
+            throw new DomainException(ErrorType.PLAYER_ALREADY_EXIST, firstName, lastName, birthDate);
         }
     }
 
@@ -159,6 +157,6 @@ public class PlayerServiceImpl implements PlayerService {
         }
 
         return titleRepository.findByNameOrAbbreviationIgnoreCase(title)
-                .orElseThrow(() -> new TitleException(TitleError.TITLE_NOT_FOUND, title));
+                .orElseThrow(() -> new DomainException(ErrorType.TITLE_NOT_FOUND, title));
     }
 }

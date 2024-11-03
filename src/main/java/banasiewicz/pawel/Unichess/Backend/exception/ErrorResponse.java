@@ -6,7 +6,7 @@ record ErrorResponse(String errorCode,
                      String message,
                      LocalDateTime timestamp) {
 
-    public static ErrorResponse buildErrorResponse(final String errorCode, final String message) {
+    public static ErrorResponse build(final String errorCode, final String message) {
         return new ErrorResponse(errorCode, message, LocalDateTime.now());
     }
 }
