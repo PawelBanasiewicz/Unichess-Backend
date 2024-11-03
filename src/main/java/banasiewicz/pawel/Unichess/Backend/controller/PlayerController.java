@@ -1,6 +1,7 @@
 package banasiewicz.pawel.Unichess.Backend.controller;
 
 import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerCreateDto;
+import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerPatchDto;
 import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerResponseDto;
 import banasiewicz.pawel.Unichess.Backend.service.PlayerService;
 import jakarta.validation.Valid;
@@ -34,6 +35,16 @@ public class PlayerController {
     @PostMapping
     public PlayerResponseDto addPlayer(final @Valid @RequestBody PlayerCreateDto playerCreateDto) {
         return playerService.addPlayer(playerCreateDto);
+    }
+
+    @PutMapping("/{id}")
+    public PlayerResponseDto putPlayer(final @PathVariable Long id, final @Valid @RequestBody PlayerCreateDto playerCreateDto) {
+        return playerService.putPlayer(id, playerCreateDto);
+    }
+
+    @PatchMapping("/{id}")
+    public PlayerResponseDto patchPlayer(final @PathVariable Long id, final @Valid @RequestBody PlayerPatchDto playerPatchDto) {
+        return playerService.patchPlayer(id, playerPatchDto);
     }
 
     @DeleteMapping("/{id}")

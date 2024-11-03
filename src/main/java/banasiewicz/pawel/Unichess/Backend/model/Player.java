@@ -32,6 +32,7 @@ public class Player {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    @NotNull
     @PastOrPresent
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
