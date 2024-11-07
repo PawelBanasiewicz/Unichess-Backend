@@ -48,6 +48,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Transactional
     public PlayerResponseDto addPlayer(final PlayerCreateDto playerCreateDto) {
         checkPlayerExistence(playerCreateDto.firstName(), playerCreateDto.lastName(), playerCreateDto.birthDate());
+        final Title title = loadPlayerTitle(playerCreateDto.title());
 
         final Player playerToSave = new Player(
                 playerCreateDto.firstName(),
@@ -55,7 +56,7 @@ public class PlayerServiceImpl implements PlayerService {
                 playerCreateDto.birthDate(),
                 playerCreateDto.sex(),
                 playerCreateDto.nationality(),
-                loadPlayerTitle(playerCreateDto.title()),
+                title,
                 playerCreateDto.eloRating()
         );
 
