@@ -31,6 +31,27 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+tasks.register('unitTest', Test) {
+	description = "Run unit tests"
+	group = "verification"
+	include 'banasiewicz/pawel/Unichess/Backend/unit/**'
+	useJUnitPlatform()
+}
+
+tasks.register('integrationTest', Test) {
+	description = "Run integration tests"
+	group = "verification"
+	include 'banasiewicz/pawel/Unichess/Backend/integration/**'
+	useJUnitPlatform()
+	shouldRunAfter 'unitTest'
+}
+
+tasks.register('allTests') {
+	description = "Run all tests (unit + integration)"
+	group = "verification"
+	dependsOn 'unitTest', 'integrationTest'
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 
