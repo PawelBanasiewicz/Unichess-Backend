@@ -35,6 +35,7 @@ tasks.register('unitTest', Test) {
 	description = "Run unit tests"
 	group = "verification"
 	include 'banasiewicz/pawel/Unichess/Backend/unit/**'
+	outputs.upToDateWhen { false }
 	useJUnitPlatform()
 }
 
@@ -42,6 +43,7 @@ tasks.register('integrationTest', Test) {
 	description = "Run integration tests"
 	group = "verification"
 	include 'banasiewicz/pawel/Unichess/Backend/integration/**'
+	outputs.upToDateWhen { false }
 	useJUnitPlatform()
 	shouldRunAfter 'unitTest'
 }
@@ -49,6 +51,7 @@ tasks.register('integrationTest', Test) {
 tasks.register('allTests') {
 	description = "Run all tests (unit + integration)"
 	group = "verification"
+	outputs.upToDateWhen { false }
 	dependsOn 'unitTest', 'integrationTest'
 }
 
