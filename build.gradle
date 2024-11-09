@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.4'
 	id 'io.spring.dependency-management' version '1.1.6'
+	id 'jacoco'
 }
 
 group = 'banasiewicz.pawel'
@@ -11,6 +12,10 @@ java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(21)
 	}
+}
+
+jacoco {
+	toolVersion = "0.8.12"
 }
 
 repositories {
@@ -37,6 +42,7 @@ tasks.register('unitTest', Test) {
 	include 'banasiewicz/pawel/Unichess/Backend/unit/**'
 	outputs.upToDateWhen { false }
 	useJUnitPlatform()
+	finalizedBy 'jacocoUnitTestReport'
 }
 
 tasks.register('integrationTest', Test) {
@@ -46,6 +52,7 @@ tasks.register('integrationTest', Test) {
 	outputs.upToDateWhen { false }
 	useJUnitPlatform()
 	shouldRunAfter 'unitTest'
+	finalizedBy 'jacocoIntegrationTestReport'
 }
 
 tasks.register('allTests') {
@@ -53,6 +60,38 @@ tasks.register('allTests') {
 	group = "verification"
 	outputs.upToDateWhen { false }
 	dependsOn 'unitTest', 'integrationTest'
+}
+
+tasks.register('jacocoUnitTestReport', JacocoReport) {
+	description = "Generate Jacoco coverage report for unit tests"
+	group = "verification"
+	dependsOn 'unitTest'
+
+	executionData fileTree(dir: 'build/jacoco', includes: ['unitTest.exec'])
+
+	sourceDirectories.setFrom(files(sourceSets.main.allSource.srcDirs))
+	classDirectories.setFrom(files(sourceSets.main.output))
+
+	reports {
+		html.required.set(true)
+		xml.required.set(true)
+	}
+}
+
+tasks.register('jacocoIntegrationTestReport', JacocoReport) {
+	description = "Generate Jacoco coverage report for integration tests"
+	group = "verification"
+	dependsOn('integrationTest')
+
+	executionData fileTree(dir: 'build/jacoco', includes: ['integrationTest.exec'])
+
+	sourceDirectories.setFrom(files(sourceSets.main.allSource.srcDirs))
+	classDirectories.setFrom(files(sourceSets.main.output))
+
+	reports {
+		html.required.set(true)
+		xml.required.set(true)
+	}
 }
 
 tasks.named('test') {
