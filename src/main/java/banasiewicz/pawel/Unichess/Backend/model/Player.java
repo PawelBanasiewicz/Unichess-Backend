@@ -1,6 +1,5 @@
 package banasiewicz.pawel.Unichess.Backend.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -45,7 +44,6 @@ public class Player {
     private String nationality;
 
     @ManyToOne
-    @JsonManagedReference
     @JoinColumn(name = "title_id")
     private Title title;
 

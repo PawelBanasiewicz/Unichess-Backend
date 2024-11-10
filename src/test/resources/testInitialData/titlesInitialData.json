@@ -1,0 +1,83 @@
+[
+  {
+    "id": 1,
+    "name": "National Master",
+    "abbreviation": "NM",
+    "eloThreshold": 2200,
+    "requiresNorm": false,
+    "onlyFemale": false,
+    "introductionYear": 2002
+  },
+  {
+    "id": 2,
+    "name": "Woman Candidate Master",
+    "abbreviation": "WCM",
+    "eloThreshold": 2000,
+    "requiresNorm": false,
+    "onlyFemale": true,
+    "introductionYear": 2002
+  },
+  {
+    "id": 3,
+    "name": "Woman FIDE Master",
+    "abbreviation": "WFM",
+    "eloThreshold": 2100,
+    "requiresNorm": false,
+    "onlyFemale": true,
+    "introductionYear": 1978
+  },
+  {
+    "id": 4,
+    "name": "Woman International Master",
+    "abbreviation": "WIM",
+    "eloThreshold": 2200,
+    "requiresNorm": true,
+    "onlyFemale": true,
+    "introductionYear": 1950
+  },
+  {
+    "id": 5,
+    "name": "Woman Grandmaster",
+    "abbreviation": "WGM",
+    "eloThreshold": 2300,
+    "requiresNorm": true,
+    "onlyFemale": true,
+    "introductionYear": 1976
+  },
+  {
+    "id": 6,
+    "name": "Candidate Master",
+    "abbreviation": "CM",
+    "eloThreshold": 2200,
+    "requiresNorm": false,
+    "onlyFemale": false,
+    "introductionYear": 2002
+  },
+  {
+    "id": 7,
+    "name": "FIDE Master",
+    "abbreviation": "FM",
+    "eloThreshold": 2300,
+    "requiresNorm": false,
+    "onlyFemale": false,
+    "introductionYear": 1978
+  },
+  {
+    "id": 8,
+    "name": "International Master",
+    "abbreviation": "IM",
+    "eloThreshold": 2400,
+    "requiresNorm": true,
+    "onlyFemale": false,
+    "introductionYear": 1950
+  },
+  {
+    "id": 9,
+    "name": "Grandmaster",
+    "abbreviation": "GM",
+    "eloThreshold": 2500,
+    "requiresNorm": true,
+    "onlyFemale": false,
+    "introductionYear": 1950
+  }
+]

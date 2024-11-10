@@ -1,6 +1,5 @@
 package banasiewicz.pawel.Unichess.Backend.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -44,7 +43,6 @@ public class Title {
     private Boolean onlyFemale;
 
     @OneToMany(mappedBy = "title", fetch = FetchType.LAZY)
-    @JsonBackReference
     private List<Player> players;
 
     @Min(1)
