@@ -2,6 +2,7 @@ package banasiewicz.pawel.Unichess.Backend.exception;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -40,8 +40,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleDomainException(final DomainException e, final Locale locale) {
-        final String message = messageSource.getMessage(e.getErrorType().getMessageKey(), e.getParams(), locale);
+    public ResponseEntity<ErrorResponse> handleDomainException(final DomainException e) {
+        final String message = messageSource.getMessage(e.getErrorType().getMessageKey(), e.getParams(), LocaleContextHolder.getLocale());
         final String errorCode = e.getErrorType().name();
         final HttpStatus httpStatus = e.getErrorType().getHttpStatus();
 

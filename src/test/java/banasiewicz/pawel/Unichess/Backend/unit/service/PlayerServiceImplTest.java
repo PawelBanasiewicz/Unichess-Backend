@@ -71,7 +71,7 @@ class PlayerServiceImplTest {
 
         final DomainException domainException = assertThrows(DomainException.class, () -> playerServiceImpl.addPlayer(playerCreateDto));
         verify(playerRepository, times(1)).existsByFirstNameAndLastNameAndBirthDate(firstName, lastName, birthDate);
-        verify(titleRepository, times(0)).findByNameOrAbbreviationIgnoreCase(any(String.class));
+        verify(titleRepository, times(0)).findByFullNameOrAbbreviationIgnoreCase(any(String.class));
         assertEquals(ErrorType.PLAYER_ALREADY_EXIST, domainException.getErrorType());
         assertEquals(firstName, domainException.getParams()[0]);
         assertEquals(lastName, domainException.getParams()[1]);
@@ -89,11 +89,11 @@ class PlayerServiceImplTest {
                 Player.Sex.MALE, "Norway", nonExistingTitle, 2850);
 
         when(playerRepository.existsByFirstNameAndLastNameAndBirthDate(firstName, lastName, birthDate)).thenReturn(false);
-        when(titleRepository.findByNameOrAbbreviationIgnoreCase(nonExistingTitle)).thenReturn(Optional.empty());
+        when(titleRepository.findByFullNameOrAbbreviationIgnoreCase(nonExistingTitle)).thenReturn(Optional.empty());
 
         final DomainException domainException = assertThrows(DomainException.class, () -> playerServiceImpl.addPlayer(playerCreateDto));
         verify(playerRepository, times(1)).existsByFirstNameAndLastNameAndBirthDate(firstName, lastName, birthDate);
-        verify(titleRepository, times(1)).findByNameOrAbbreviationIgnoreCase(nonExistingTitle);
+        verify(titleRepository, times(1)).findByFullNameOrAbbreviationIgnoreCase(nonExistingTitle);
         assertEquals(ErrorType.TITLE_NOT_FOUND, domainException.getErrorType());
         assertEquals(nonExistingTitle, domainException.getParams()[0]);
     }
@@ -110,7 +110,7 @@ class PlayerServiceImplTest {
 
         when(playerRepository.existsByFirstNameAndLastNameAndBirthDate(firstName, lastName, birthDate)).thenReturn(false);
         final Title mockedGmTitle = mock(Title.class);
-        when(titleRepository.findByNameOrAbbreviationIgnoreCase(title)).thenReturn(Optional.of(mockedGmTitle));
+        when(titleRepository.findByFullNameOrAbbreviationIgnoreCase(title)).thenReturn(Optional.of(mockedGmTitle));
 
         final Player dummySavedPlayer = new Player();
         when(playerRepository.save(any(Player.class))).thenReturn(dummySavedPlayer);
@@ -118,7 +118,7 @@ class PlayerServiceImplTest {
         final PlayerResponseDto playerResponseDto = playerServiceImpl.addPlayer(playerCreateDto);
         assertNotNull(playerResponseDto);
         verify(playerRepository, times(1)).existsByFirstNameAndLastNameAndBirthDate(firstName, lastName, birthDate);
-        verify(titleRepository, times(1)).findByNameOrAbbreviationIgnoreCase(title);
+        verify(titleRepository, times(1)).findByFullNameOrAbbreviationIgnoreCase(title);
         verify(playerRepository, times(1)).save(any(Player.class));
     }
 
@@ -137,7 +137,7 @@ class PlayerServiceImplTest {
 
         final DomainException domainException = assertThrows(DomainException.class, () -> playerServiceImpl.putPlayer(selectedPlayerId, playerCreateDto));
         verify(playerRepository, times(1)).existsByFirstNameAndLastNameAndBirthDateExcludingId(selectedPlayerId, firstName, lastName, birthDate);
-        verify(titleRepository, times(0)).findByNameOrAbbreviationIgnoreCase(any(String.class));
+        verify(titleRepository, times(0)).findByFullNameOrAbbreviationIgnoreCase(any(String.class));
         verify(playerRepository, times(0)).findById(selectedPlayerId);
         assertEquals(ErrorType.PLAYER_ALREADY_EXIST, domainException.getErrorType());
         assertEquals(firstName, domainException.getParams()[0]);
@@ -158,11 +158,11 @@ class PlayerServiceImplTest {
                 Player.Sex.MALE, "Norway", nonExistingTitle, 2850);
 
         when(playerRepository.existsByFirstNameAndLastNameAndBirthDateExcludingId(selectedPlayerId, firstName, lastName, birthDate)).thenReturn(false);
-        when(titleRepository.findByNameOrAbbreviationIgnoreCase(nonExistingTitle)).thenReturn(Optional.empty());
+        when(titleRepository.findByFullNameOrAbbreviationIgnoreCase(nonExistingTitle)).thenReturn(Optional.empty());
 
         final DomainException domainException = assertThrows(DomainException.class, () -> playerServiceImpl.putPlayer(selectedPlayerId, playerCreateDto));
         verify(playerRepository, times(1)).existsByFirstNameAndLastNameAndBirthDateExcludingId(selectedPlayerId, firstName, lastName, birthDate);
-        verify(titleRepository, times(1)).findByNameOrAbbreviationIgnoreCase(nonExistingTitle);
+        verify(titleRepository, times(1)).findByFullNameOrAbbreviationIgnoreCase(nonExistingTitle);
         verify(playerRepository, times(0)).findById(selectedPlayerId);
         assertEquals(ErrorType.TITLE_NOT_FOUND, domainException.getErrorType());
         assertEquals(nonExistingTitle, domainException.getParams()[0]);
@@ -182,12 +182,12 @@ class PlayerServiceImplTest {
 
         when(playerRepository.existsByFirstNameAndLastNameAndBirthDateExcludingId(selectedPlayerId, firstName, lastName, birthDate)).thenReturn(false);
         final Title mockedGmTitle = mock(Title.class);
-        when(titleRepository.findByNameOrAbbreviationIgnoreCase(title)).thenReturn(Optional.of(mockedGmTitle));
+        when(titleRepository.findByFullNameOrAbbreviationIgnoreCase(title)).thenReturn(Optional.of(mockedGmTitle));
         when(playerRepository.findById(selectedPlayerId)).thenReturn(Optional.empty());
 
         final DomainException domainException = assertThrows(DomainException.class, () -> playerServiceImpl.putPlayer(selectedPlayerId, playerCreateDto));
         verify(playerRepository, times(1)).existsByFirstNameAndLastNameAndBirthDateExcludingId(selectedPlayerId, firstName, lastName, birthDate);
-        verify(titleRepository, times(1)).findByNameOrAbbreviationIgnoreCase(title);
+        verify(titleRepository, times(1)).findByFullNameOrAbbreviationIgnoreCase(title);
         verify(playerRepository, times(1)).findById(selectedPlayerId);
         assertEquals(ErrorType.PLAYER_NOT_FOUND, domainException.getErrorType());
         assertEquals(selectedPlayerId, domainException.getParams()[0]);
@@ -207,7 +207,7 @@ class PlayerServiceImplTest {
 
         when(playerRepository.existsByFirstNameAndLastNameAndBirthDateExcludingId(selectedPlayerId, firstName, lastName, birthDate)).thenReturn(false);
         final Title mockedGmTitle = mock(Title.class);
-        when(titleRepository.findByNameOrAbbreviationIgnoreCase(title)).thenReturn(Optional.of(mockedGmTitle));
+        when(titleRepository.findByFullNameOrAbbreviationIgnoreCase(title)).thenReturn(Optional.of(mockedGmTitle));
 
         final Player dummySavedPlayer = new Player();
         when(playerRepository.findById(selectedPlayerId)).thenReturn(Optional.of(dummySavedPlayer));
@@ -216,7 +216,7 @@ class PlayerServiceImplTest {
         final PlayerResponseDto playerResponseDto = playerServiceImpl.putPlayer(selectedPlayerId, playerCreateDto);
         assertNotNull(playerResponseDto);
         verify(playerRepository, times(1)).existsByFirstNameAndLastNameAndBirthDateExcludingId(selectedPlayerId, firstName, lastName, birthDate);
-        verify(titleRepository, times(1)).findByNameOrAbbreviationIgnoreCase(title);
+        verify(titleRepository, times(1)).findByFullNameOrAbbreviationIgnoreCase(title);
         verify(playerRepository, times(1)).findById(selectedPlayerId);
         verify(playerRepository, times(1)).save(any(Player.class));
     }
@@ -236,7 +236,7 @@ class PlayerServiceImplTest {
 
         final DomainException domainException = assertThrows(DomainException.class, () -> playerServiceImpl.patchPlayer(selectedPlayerId, playerPatchDto));
         verify(playerRepository, times(1)).existsByFirstNameAndLastNameAndBirthDateExcludingId(selectedPlayerId, firstName, lastName, birthDate);
-        verify(titleRepository, times(0)).findByNameOrAbbreviationIgnoreCase(any(String.class));
+        verify(titleRepository, times(0)).findByFullNameOrAbbreviationIgnoreCase(any(String.class));
         verify(playerRepository, times(0)).findById(selectedPlayerId);
         assertEquals(ErrorType.PLAYER_ALREADY_EXIST, domainException.getErrorType());
         assertEquals(firstName, domainException.getParams()[0]);
@@ -257,11 +257,11 @@ class PlayerServiceImplTest {
                 Player.Sex.MALE, "Norway", nonExistingTitle, 2850);
 
         when(playerRepository.existsByFirstNameAndLastNameAndBirthDateExcludingId(selectedPlayerId, firstName, lastName, birthDate)).thenReturn(false);
-        when(titleRepository.findByNameOrAbbreviationIgnoreCase(nonExistingTitle)).thenReturn(Optional.empty());
+        when(titleRepository.findByFullNameOrAbbreviationIgnoreCase(nonExistingTitle)).thenReturn(Optional.empty());
 
         final DomainException domainException = assertThrows(DomainException.class, () -> playerServiceImpl.patchPlayer(selectedPlayerId, playerPatchDto));
         verify(playerRepository, times(1)).existsByFirstNameAndLastNameAndBirthDateExcludingId(selectedPlayerId, firstName, lastName, birthDate);
-        verify(titleRepository, times(1)).findByNameOrAbbreviationIgnoreCase(nonExistingTitle);
+        verify(titleRepository, times(1)).findByFullNameOrAbbreviationIgnoreCase(nonExistingTitle);
         verify(playerRepository, times(0)).findById(selectedPlayerId);
         assertEquals(ErrorType.TITLE_NOT_FOUND, domainException.getErrorType());
         assertEquals(nonExistingTitle, domainException.getParams()[0]);
@@ -281,12 +281,12 @@ class PlayerServiceImplTest {
 
         when(playerRepository.existsByFirstNameAndLastNameAndBirthDateExcludingId(selectedPlayerId, firstName, lastName, birthDate)).thenReturn(false);
         final Title mockedGmTitle = mock(Title.class);
-        when(titleRepository.findByNameOrAbbreviationIgnoreCase(title)).thenReturn(Optional.of(mockedGmTitle));
+        when(titleRepository.findByFullNameOrAbbreviationIgnoreCase(title)).thenReturn(Optional.of(mockedGmTitle));
         when(playerRepository.findById(selectedPlayerId)).thenReturn(Optional.empty());
 
         final DomainException domainException = assertThrows(DomainException.class, () -> playerServiceImpl.patchPlayer(selectedPlayerId, playerPatchDto));
         verify(playerRepository, times(1)).existsByFirstNameAndLastNameAndBirthDateExcludingId(selectedPlayerId, firstName, lastName, birthDate);
-        verify(titleRepository, times(1)).findByNameOrAbbreviationIgnoreCase(title);
+        verify(titleRepository, times(1)).findByFullNameOrAbbreviationIgnoreCase(title);
         verify(playerRepository, times(1)).findById(selectedPlayerId);
         assertEquals(ErrorType.PLAYER_NOT_FOUND, domainException.getErrorType());
         assertEquals(selectedPlayerId, domainException.getParams()[0]);
@@ -306,7 +306,7 @@ class PlayerServiceImplTest {
 
         when(playerRepository.existsByFirstNameAndLastNameAndBirthDateExcludingId(selectedPlayerId, firstName, lastName, birthDate)).thenReturn(false);
         final Title mockedGmTitle = mock(Title.class);
-        when(titleRepository.findByNameOrAbbreviationIgnoreCase(title)).thenReturn(Optional.of(mockedGmTitle));
+        when(titleRepository.findByFullNameOrAbbreviationIgnoreCase(title)).thenReturn(Optional.of(mockedGmTitle));
 
         final Player dummySavedPlayer = new Player();
         when(playerRepository.findById(selectedPlayerId)).thenReturn(Optional.of(dummySavedPlayer));
@@ -315,7 +315,7 @@ class PlayerServiceImplTest {
         final PlayerResponseDto playerResponseDto = playerServiceImpl.patchPlayer(selectedPlayerId, playerPatchDto);
         assertNotNull(playerResponseDto);
         verify(playerRepository, times(1)).existsByFirstNameAndLastNameAndBirthDateExcludingId(selectedPlayerId, firstName, lastName, birthDate);
-        verify(titleRepository, times(1)).findByNameOrAbbreviationIgnoreCase(title);
+        verify(titleRepository, times(1)).findByFullNameOrAbbreviationIgnoreCase(title);
         verify(playerRepository, times(1)).findById(selectedPlayerId);
         verify(playerRepository, times(1)).save(any(Player.class));
     }

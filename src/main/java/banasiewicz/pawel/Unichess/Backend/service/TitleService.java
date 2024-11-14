@@ -9,5 +9,5 @@ public interface TitleService {
 
     List<TitleResponseDto> getTitles();
 
-    TitleResponseDto getTitleResponseByAbbreviation(final String abbreviation);
+    TitleResponseDto getTitleByFullNameOrAbbreviation(final String abbreviation);
 }

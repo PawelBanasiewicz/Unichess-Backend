@@ -14,5 +14,5 @@ public interface TitleRepository extends JpaRepository<Title, Long> {
     @Query("SELECT t from Title t " +
             "WHERE LOWER(t.name) = LOWER(:title) " +
             "OR LOWER(t.abbreviation) = LOWER(:title)")
-    Optional<Title> findByNameOrAbbreviationIgnoreCase(final @Param("title") String title);
+    Optional<Title> findByFullNameOrAbbreviationIgnoreCase(final @Param("title") String title);
 }

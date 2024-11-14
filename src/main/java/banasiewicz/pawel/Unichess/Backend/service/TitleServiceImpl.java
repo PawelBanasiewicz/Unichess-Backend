@@ -28,9 +28,9 @@ public class TitleServiceImpl implements TitleService {
     }
 
     @Override
-    public TitleResponseDto getTitleResponseByAbbreviation(final String abbreviation) {
-        final Title title = titleRepository.findByNameOrAbbreviationIgnoreCase(abbreviation)
-                .orElseThrow(() -> new DomainException(ErrorType.TITLE_NOT_FOUND, abbreviation));
-        return TitleResponseDto.from(title);
+    public TitleResponseDto getTitleByFullNameOrAbbreviation(final String title) {
+        final Title foundTitle = titleRepository.findByFullNameOrAbbreviationIgnoreCase(title)
+                .orElseThrow(() -> new DomainException(ErrorType.TITLE_NOT_FOUND, title));
+        return TitleResponseDto.from(foundTitle);
     }
 }

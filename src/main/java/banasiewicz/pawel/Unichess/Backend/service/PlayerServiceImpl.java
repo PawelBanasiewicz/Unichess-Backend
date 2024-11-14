@@ -157,7 +157,7 @@ public class PlayerServiceImpl implements PlayerService {
             return null;
         }
 
-        return titleRepository.findByNameOrAbbreviationIgnoreCase(title)
+        return titleRepository.findByFullNameOrAbbreviationIgnoreCase(title)
                 .orElseThrow(() -> new DomainException(ErrorType.TITLE_NOT_FOUND, title));
     }
 }
