@@ -1,8 +1,11 @@
 package banasiewicz.pawel.Unichess.Backend.exception;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDateTime;
 
-record ErrorResponse(String errorCode,
+@Schema(description = "Error response schema")
+public record ErrorResponse(String errorCode,
                      String message,
                      LocalDateTime timestamp) {
 

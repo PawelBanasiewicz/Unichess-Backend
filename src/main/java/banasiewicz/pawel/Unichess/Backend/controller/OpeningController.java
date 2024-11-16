@@ -2,7 +2,7 @@ package banasiewicz.pawel.Unichess.Backend.controller;
 
 
 import banasiewicz.pawel.Unichess.Backend.dto.opening.OpeningResponseDto;
-import banasiewicz.pawel.Unichess.Backend.response.ApiResponse;
+import banasiewicz.pawel.Unichess.Backend.response.UnichessApiResponse;
 import banasiewicz.pawel.Unichess.Backend.service.OpeningService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -28,10 +28,10 @@ public class OpeningController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<OpeningResponseDto>>> getOpenings() {
+    public ResponseEntity<UnichessApiResponse<List<OpeningResponseDto>>> getOpenings() {
         final List<OpeningResponseDto> openings = openingService.getOpenings();
         final String message = messageSource.getMessage("success.opening.get.all", null, LocaleContextHolder.getLocale());
-        final ApiResponse<List<OpeningResponseDto>> response = ApiResponse.success(message, openings);
+        final UnichessApiResponse<List<OpeningResponseDto>> response = UnichessApiResponse.success(message, openings);
         return ResponseEntity.ok(response);
     }
 }
