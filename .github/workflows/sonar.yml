@@ -1,4 +1,4 @@
-name: Tests
+name: Sonar
 
 on:
   push:
@@ -31,18 +31,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Build project
+      - name: Build JAR package
         run: ./gradlew clean build
 
-      - name: Run Unit Tests
-        run: ./gradlew unitTest
-
-      - name: Run Integration Tests
-        run: ./gradlew integrationTest
-
-      - name: Upload Test Report Artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-reports
-          path: build/reports/
+      - name: SonarCloud Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew sonarqube
