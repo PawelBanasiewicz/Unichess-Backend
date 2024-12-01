@@ -3,6 +3,7 @@ package banasiewicz.pawel.Unichess.Backend.service;
 import banasiewicz.pawel.Unichess.Backend.dto.opening.OpeningResponseDto;
 import banasiewicz.pawel.Unichess.Backend.repository.OpeningRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class OpeningServiceImpl implements OpeningService {
 
     @Override
     public List<OpeningResponseDto> getOpenings() {
-        return openingRepository.findAll().stream()
+        return openingRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream()
                 .map(OpeningResponseDto::from)
                 .toList();
     }

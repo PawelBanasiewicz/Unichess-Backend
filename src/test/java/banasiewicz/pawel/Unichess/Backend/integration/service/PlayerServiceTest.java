@@ -70,11 +70,11 @@ public class PlayerServiceTest {
     @Test
     @Transactional
     void addPlayer_shouldAddPlayerWithProperTitle_whenTitleIdIsValidAndVerboseName() {
-        final PlayerCreateDto grandMasterPlayerCreateDto = new PlayerCreateDto("Magnus", "Carlsen",
+        final PlayerCreateDto grandmasterPlayerCreateDto = new PlayerCreateDto("Magnus", "Carlsen",
                 LocalDate.of(1990, 11, 30), Player.Sex.MALE, "Norway", "Grandmaster", 2855);
-        final PlayerResponseDto grandMasterPlayerResponseDto = playerService.addPlayer(grandMasterPlayerCreateDto);
-        assertNotNull(grandMasterPlayerResponseDto);
-        assertEquals("GM", grandMasterPlayerResponseDto.title());
+        final PlayerResponseDto grandmasterPlayerResponseDto = playerService.addPlayer(grandmasterPlayerCreateDto);
+        assertNotNull(grandmasterPlayerResponseDto);
+        assertEquals("GM", grandmasterPlayerResponseDto.title());
 
 
         final PlayerCreateDto internationalMasterPlayerCreateDto = new PlayerCreateDto("Anna", "Muzychuk",

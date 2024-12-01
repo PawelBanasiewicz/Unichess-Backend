@@ -11,6 +11,7 @@ import banasiewicz.pawel.Unichess.Backend.repository.PlayerRepository;
 import banasiewicz.pawel.Unichess.Backend.repository.TitleRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -32,7 +33,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public List<PlayerResponseDto> getPlayers() {
-        return playerRepository.findAll().stream()
+        return playerRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream()
                 .map(PlayerResponseDto::from)
                 .toList();
     }

@@ -79,7 +79,7 @@ public class PlayerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @Operation(summary = "Put player", description = "Edits only the entire selected player. It does not add a new one if the ID does not exist")
+    @Operation(summary = "Put player", description = "Edits the entire selected player. It does not add a new one if the ID does not exist")
     @ApiResponses({
             @ApiResponse(responseCode = "200"),
             @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
