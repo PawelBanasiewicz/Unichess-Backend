@@ -68,7 +68,6 @@ public class OpenApiConfig {
                         apiResponse.setDescription(message);
                     } else {
                         apiResponse.setDescription(ERROR_DESCRIPTIONS.get(statusCode));
-//                        apiResponse.setContent(createErrorContent());
                     }
                 });
             } catch (Exception ignored) {
@@ -87,12 +86,4 @@ public class OpenApiConfig {
         final String methodName = handlerMethod.getMethod().getName();
         return String.format("success.%s.%s", controllerName, methodName);
     }
-
-//    private Content createErrorContent() {
-//        Content content = new Content();
-//        MediaType mediaType = new MediaType();
-//        mediaType.setSchema(new Schema<>().$ref("#/components/schemas/ErrorResponse"));
-//        content.addMediaType(org.springframework.http.MediaType.APPLICATION_JSON_VALUE, mediaType);
-//        return content;
-//    }
 }

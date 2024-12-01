@@ -4,6 +4,8 @@ package banasiewicz.pawel.Unichess.Backend.controller;
 import banasiewicz.pawel.Unichess.Backend.dto.opening.OpeningResponseDto;
 import banasiewicz.pawel.Unichess.Backend.response.UnichessApiResponse;
 import banasiewicz.pawel.Unichess.Backend.service.OpeningService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -27,10 +29,12 @@ public class OpeningController {
         this.messageSource = messageSource;
     }
 
+    @Operation(summary = "Get all openings")
+    @ApiResponse(responseCode = "200")
     @GetMapping
     public ResponseEntity<UnichessApiResponse<List<OpeningResponseDto>>> getOpenings() {
         final List<OpeningResponseDto> openings = openingService.getOpenings();
-        final String message = messageSource.getMessage("success.opening.get.all", null, LocaleContextHolder.getLocale());
+        final String message = messageSource.getMessage("success.opening.getOpenings", null, LocaleContextHolder.getLocale());
         final UnichessApiResponse<List<OpeningResponseDto>> response = UnichessApiResponse.success(message, openings);
         return ResponseEntity.ok(response);
     }
