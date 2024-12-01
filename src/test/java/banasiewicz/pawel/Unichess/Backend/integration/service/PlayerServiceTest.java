@@ -3,6 +3,7 @@ package banasiewicz.pawel.Unichess.Backend.integration.service;
 import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerCreateDto;
 import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerResponseDto;
 import banasiewicz.pawel.Unichess.Backend.exception.DomainException;
+import banasiewicz.pawel.Unichess.Backend.exception.ErrorType;
 import banasiewicz.pawel.Unichess.Backend.model.Player;
 import banasiewicz.pawel.Unichess.Backend.service.PlayerService;
 import org.junit.jupiter.api.Test;
@@ -129,6 +130,105 @@ public class PlayerServiceTest {
 
     @Test
     @Transactional
+    void addPlayer_shouldAddPlayer_whenOnlyAllRequireFieldsAreProvided() {
+        final PlayerCreateDto playerCreateDto = new PlayerCreateDto("Magnus", "Carlsen",
+                LocalDate.of(1990, 11, 30), null, null, null, null);
+        final PlayerResponseDto playerResponseDto = playerService.addPlayer(playerCreateDto);
+        assertNotNull(playerResponseDto);
+        checkPlayerResponseDtoWithPlayerCreateDto(playerResponseDto, playerCreateDto);
+    }
+
+    @Test
+    @Transactional
+    void putPlayer_shouldPutPlayer_whenThereIsNoDuplication() {
+        final PlayerCreateDto firstPlayerCreateDto = new PlayerCreateDto("Magnus", "Carlsen",
+                LocalDate.of(1990, 11, 30), Player.Sex.MALE, "Norway", "GM", 2855);
+
+        final PlayerResponseDto firstPlayerResponseDto = playerService.addPlayer(firstPlayerCreateDto);
+
+        final PlayerCreateDto secondPlayerCreateDto = new PlayerCreateDto("Garry", "Kasparov",
+                LocalDate.of(1963, 4, 13), Player.Sex.MALE, "Russia", "GM", 2855);
+
+        playerService.addPlayer(secondPlayerCreateDto);
+
+        final PlayerCreateDto putPlayerCreateDto = new PlayerCreateDto("Anna", "Muzychuk",
+                LocalDate.of(1990, 2, 28), Player.Sex.FEMALE, "Ukraine", "IM", 2500);
+
+        final PlayerResponseDto putPlayerResponseDto = playerService.putPlayer(firstPlayerResponseDto.id(), putPlayerCreateDto);
+        assertNotNull(putPlayerResponseDto);
+        checkPlayerResponseDtoWithPlayerCreateDto(putPlayerResponseDto, putPlayerCreateDto);
+
+        final PlayerResponseDto firstPlayerById = playerService.getPlayerById(firstPlayerResponseDto.id());
+        assertNotNull(firstPlayerById);
+        checkTwoPlayerResponseDtoEquality(firstPlayerById, putPlayerResponseDto);
+    }
+
+    @Test
+    @Transactional
+    void putPlayer_shouldPutPlayer_whenOnlyAllRequireFieldsAreProvided() {
+        final PlayerCreateDto firstPlayerCreateDto = new PlayerCreateDto("Magnus", "Carlsen",
+                LocalDate.of(1990, 11, 30), Player.Sex.MALE, "Norway", "GM", 2855);
+
+        final PlayerResponseDto firstPlayerResponseDto = playerService.addPlayer(firstPlayerCreateDto);
+
+        final PlayerCreateDto secondPlayerCreateDto = new PlayerCreateDto("Garry", "Kasparov",
+                LocalDate.of(1963, 4, 13), Player.Sex.MALE, "Russia", "GM", 2855);
+
+        playerService.addPlayer(secondPlayerCreateDto);
+
+        final PlayerCreateDto putPlayerCreateDto = new PlayerCreateDto("Anna", "Muzychuk",
+                LocalDate.of(1990, 2, 28), null, null, null, null);
+
+        final PlayerResponseDto putPlayerResponseDto = playerService.putPlayer(firstPlayerResponseDto.id(), putPlayerCreateDto);
+        assertNotNull(putPlayerResponseDto);
+        checkPlayerResponseDtoWithPlayerCreateDto(putPlayerResponseDto, putPlayerCreateDto);
+
+        final PlayerResponseDto firstPlayerById = playerService.getPlayerById(firstPlayerResponseDto.id());
+        assertNotNull(firstPlayerById);
+        checkTwoPlayerResponseDtoEquality(firstPlayerById, putPlayerResponseDto);
+    }
+
+    @Test
+    @Transactional
+    void putPlayer_shouldPutPlayer_whenPlayerIsDuplicatedWithSelectedPlayer() {
+        final PlayerCreateDto firstPlayerCreateDto = new PlayerCreateDto("Magnus", "Carlsen",
+                LocalDate.of(1990, 11, 30), Player.Sex.MALE, "Norway", "GM", 2855);
+
+        final PlayerResponseDto firstPlayerResponseDto = playerService.addPlayer(firstPlayerCreateDto);
+
+        final PlayerResponseDto putPlayerResponseDto = playerService.putPlayer(firstPlayerResponseDto.id(), firstPlayerCreateDto);
+        assertNotNull(putPlayerResponseDto);
+        checkPlayerResponseDtoWithPlayerCreateDto(putPlayerResponseDto, firstPlayerCreateDto);
+
+        final PlayerResponseDto firstPlayerById = playerService.getPlayerById(firstPlayerResponseDto.id());
+        assertNotNull(firstPlayerById);
+        checkTwoPlayerResponseDtoEquality(firstPlayerById, firstPlayerResponseDto);
+    }
+
+    @Test
+    @Transactional
+    void putPlayer_shouldThrowDomainExceptionWithPlayerAlreadyExistError_whenPlayerAlreadyExistAndIsDifferentThanSelected() {
+        final PlayerCreateDto firstPlayerCreateDto = new PlayerCreateDto("Magnus", "Carlsen",
+                LocalDate.of(1990, 11, 30), Player.Sex.MALE, "Norway", "GM", 2855);
+
+        final PlayerResponseDto firstPlayerResponseDto = playerService.addPlayer(firstPlayerCreateDto);
+        assertNotNull(firstPlayerResponseDto);
+
+        final PlayerCreateDto secondPlayerCreateDto = new PlayerCreateDto("Garry", "Kasparov",
+                LocalDate.of(1963, 4, 13), Player.Sex.MALE, "Russia", "GM", 2855);
+        final PlayerResponseDto secondPlayerResponseDto = playerService.addPlayer(secondPlayerCreateDto);
+        assertNotNull(secondPlayerResponseDto);
+
+        final DomainException domainException = assertThrows(DomainException.class, () -> playerService.putPlayer(secondPlayerResponseDto.id(), firstPlayerCreateDto));
+        assertEquals(ErrorType.PLAYER_ALREADY_EXIST, domainException.getErrorType());
+
+        final PlayerResponseDto firstPlayerById = playerService.getPlayerById(firstPlayerResponseDto.id());
+        assertNotNull(firstPlayerById);
+        checkTwoPlayerResponseDtoEquality(firstPlayerById, firstPlayerResponseDto);
+    }
+
+    @Test
+    @Transactional
     void deletePlayer_ShouldDeletePlayer_whenSelectedPlayerExists() {
         final PlayerCreateDto playerCreateDto = new PlayerCreateDto("Magnus", "Carlsen",
                 LocalDate.of(1990, 11, 30), Player.Sex.MALE, "Norway", "Grandmaster", 2855);
@@ -146,5 +246,14 @@ public class PlayerServiceTest {
         assertEquals(playerResponseDto.sex(), playerCreateDto.sex());
         assertEquals(playerResponseDto.title(), playerCreateDto.title());
         assertEquals(playerResponseDto.eloRating(), playerCreateDto.eloRating());
+    }
+
+    private void checkTwoPlayerResponseDtoEquality(final PlayerResponseDto firstPlayerResponseDto, final PlayerResponseDto secondPlayerResponseDto) {
+        assertEquals(firstPlayerResponseDto.firstName(), secondPlayerResponseDto.firstName());
+        assertEquals(firstPlayerResponseDto.lastName(), secondPlayerResponseDto.lastName());
+        assertEquals(firstPlayerResponseDto.birthDate(), secondPlayerResponseDto.birthDate());
+        assertEquals(firstPlayerResponseDto.sex(), secondPlayerResponseDto.sex());
+        assertEquals(firstPlayerResponseDto.title(), secondPlayerResponseDto.title());
+        assertEquals(firstPlayerResponseDto.eloRating(), secondPlayerResponseDto.eloRating());
     }
 }
