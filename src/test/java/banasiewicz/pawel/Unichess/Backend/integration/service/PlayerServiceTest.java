@@ -1,6 +1,7 @@
 package banasiewicz.pawel.Unichess.Backend.integration.service;
 
 import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerCreateDto;
+import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerPatchDto;
 import banasiewicz.pawel.Unichess.Backend.dto.player.PlayerResponseDto;
 import banasiewicz.pawel.Unichess.Backend.exception.DomainException;
 import banasiewicz.pawel.Unichess.Backend.exception.ErrorType;
@@ -26,7 +27,7 @@ public class PlayerServiceTest {
 
     @Test
     @Transactional
-    void getPlayers_shouldReturnEmptyList_whenThereIsNoPlayer() {
+    void getPlayers_shouldReturnEmptyList_whenNoPlayersExist() {
         final List<PlayerResponseDto> players = playerService.getPlayers();
         assertNotNull(players);
         assertTrue(players.isEmpty());
@@ -140,7 +141,7 @@ public class PlayerServiceTest {
 
     @Test
     @Transactional
-    void putPlayer_shouldPutPlayer_whenThereIsNoDuplication() {
+    void putPlayer_shouldUpdateEntireEntity_whenNoConflictsExist() {
         final PlayerCreateDto firstPlayerCreateDto = new PlayerCreateDto("Magnus", "Carlsen",
                 LocalDate.of(1990, 11, 30), Player.Sex.MALE, "Norway", "GM", 2855);
 
@@ -165,7 +166,7 @@ public class PlayerServiceTest {
 
     @Test
     @Transactional
-    void putPlayer_shouldPutPlayer_whenOnlyAllRequireFieldsAreProvided() {
+    void putPlayer_shouldUpdateEntireEntity_whenOnlyAllRequireFieldsAreProvided() {
         final PlayerCreateDto firstPlayerCreateDto = new PlayerCreateDto("Magnus", "Carlsen",
                 LocalDate.of(1990, 11, 30), Player.Sex.MALE, "Norway", "GM", 2855);
 
@@ -190,7 +191,7 @@ public class PlayerServiceTest {
 
     @Test
     @Transactional
-    void putPlayer_shouldPutPlayer_whenPlayerIsDuplicatedWithSelectedPlayer() {
+    void putPlayer_shouldUpdateEntireEntity_whenDataIsIdenticalToSelectedPlayer() {
         final PlayerCreateDto firstPlayerCreateDto = new PlayerCreateDto("Magnus", "Carlsen",
                 LocalDate.of(1990, 11, 30), Player.Sex.MALE, "Norway", "GM", 2855);
 
@@ -220,6 +221,80 @@ public class PlayerServiceTest {
         assertNotNull(secondPlayerResponseDto);
 
         final DomainException domainException = assertThrows(DomainException.class, () -> playerService.putPlayer(secondPlayerResponseDto.id(), firstPlayerCreateDto));
+        assertEquals(ErrorType.PLAYER_ALREADY_EXIST, domainException.getErrorType());
+
+        final PlayerResponseDto firstPlayerById = playerService.getPlayerById(firstPlayerResponseDto.id());
+        assertNotNull(firstPlayerById);
+        checkTwoPlayerResponseDtoEquality(firstPlayerById, firstPlayerResponseDto);
+    }
+
+    @Test
+    @Transactional
+    void patchPlayer_shouldChangeOnlySelectedFields_whenValidDataIsProvided() {
+        final LocalDate birthDate = LocalDate.of(1990, 11, 30);
+        final Player.Sex sex = Player.Sex.MALE;
+        final String nationality = "Norway";
+        final String title = "GM";
+        final int eloRating = 2855;
+
+        final PlayerCreateDto playerCreateDto = new PlayerCreateDto("Magnus", "Carlsen",
+                birthDate, sex, nationality, title, eloRating);
+        final PlayerResponseDto firstPlayerResponseDto = playerService.addPlayer(playerCreateDto);
+        assertNotNull(firstPlayerResponseDto);
+
+        final String changedFirstName = "Garry";
+        final String changedLastName = "Kasparov";
+        final PlayerPatchDto playerPatchDto = new PlayerPatchDto(changedFirstName, changedLastName, null, null, null, null, null);
+        final PlayerResponseDto playerResponseDto = playerService.patchPlayer(firstPlayerResponseDto.id(), playerPatchDto);
+        assertNotNull(playerResponseDto);
+
+        assertEquals(changedFirstName, playerResponseDto.firstName());
+        assertEquals(changedLastName, playerResponseDto.lastName());
+        assertEquals(birthDate, playerResponseDto.birthDate());
+        assertEquals(sex, playerResponseDto.sex());
+        assertEquals(nationality, playerResponseDto.nationality());
+        assertEquals(title, playerResponseDto.title());
+        assertEquals(eloRating, playerResponseDto.eloRating());
+    }
+
+    @Test
+    @Transactional
+    void patchPlayer_shouldAllowUpdatingPlayerWithIdenticalData_whenPatchingSamePlayer() {
+        final String firstName = "Magnus";
+        final String lastName = "Carlsen";
+        final LocalDate birthDate = LocalDate.of(1990, 11, 30);
+
+        final PlayerCreateDto playerCreateDto = new PlayerCreateDto(firstName, lastName,
+                birthDate, Player.Sex.MALE, "Norway", "GM", 2855);
+        final PlayerResponseDto firstPlayerResponseDto = playerService.addPlayer(playerCreateDto);
+        assertNotNull(firstPlayerResponseDto);
+
+        final PlayerPatchDto playerPatchDto = new PlayerPatchDto(firstName, lastName, birthDate, null, null, null, null);
+
+        final PlayerResponseDto afeterPatchPlayerResponseDto = playerService.patchPlayer(firstPlayerResponseDto.id(), playerPatchDto);
+        checkTwoPlayerResponseDtoEquality(firstPlayerResponseDto, afeterPatchPlayerResponseDto);
+    }
+
+    @Test
+    @Transactional
+    void patchPlayer_shouldThrowDomainExceptionWithPlayerAlreadyExist__whenUpdatingPlayerToDuplicateExistingPlayerData() {
+        final String firstName = "Magnus";
+        final String lastName = "Carlsen";
+        final LocalDate birthDate = LocalDate.of(1990, 11, 30);
+
+        final PlayerCreateDto playerCreateDto = new PlayerCreateDto(firstName, lastName, birthDate,
+                Player.Sex.MALE, "Norway", "GM", 2855);
+        final PlayerResponseDto firstPlayerResponseDto = playerService.addPlayer(playerCreateDto);
+        assertNotNull(firstPlayerResponseDto);
+
+        final PlayerCreateDto secondPlayerCreateDto = new PlayerCreateDto("Garry", "Kasparov",
+                LocalDate.of(1963, 4, 13), Player.Sex.MALE, "Russia", "GM", 2855);
+        final PlayerResponseDto secondPlayerResponseDto = playerService.addPlayer(secondPlayerCreateDto);
+        assertNotNull(secondPlayerResponseDto);
+
+        final PlayerPatchDto playerPatchDto = new PlayerPatchDto(firstName, lastName, birthDate, null, null, null, null);
+
+        final DomainException domainException = assertThrows(DomainException.class, () -> playerService.patchPlayer(secondPlayerResponseDto.id(), playerPatchDto));
         assertEquals(ErrorType.PLAYER_ALREADY_EXIST, domainException.getErrorType());
 
         final PlayerResponseDto firstPlayerById = playerService.getPlayerById(firstPlayerResponseDto.id());

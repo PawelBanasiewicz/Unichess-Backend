@@ -60,7 +60,10 @@ public class PlayerController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "Add player", description = "Two players with the same firstName, lastName, birthday are not allowed")
+    @Operation(summary = "Add player",
+            description = "Creates a new player with the provided data. " +
+                    "All fields marked as required must be provided. " +
+                    "The operation fails if a player with the same unique attributes already exists.")
     @ApiResponses({
             @ApiResponse(responseCode = "201"),
             @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
@@ -79,7 +82,10 @@ public class PlayerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @Operation(summary = "Put player", description = "Edits the entire selected player. It does not add a new one if the ID does not exist")
+    @Operation(summary = "Put player",
+            description = "Edits the entire selected player. " +
+                    "This operation requires all fields to be provided, as it replaces the current player data. " +
+                    "It does not add a new player if the specified ID does not exist.")
     @ApiResponses({
             @ApiResponse(responseCode = "200"),
             @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
@@ -101,7 +107,9 @@ public class PlayerController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "Patch player")
+    @Operation(summary = "Patch player",
+            description = "This operation modifies only the specified fields of a player. " +
+                    "Fields cannot be set to null through this operation.")
     @ApiResponses({
             @ApiResponse(responseCode = "200"),
             @ApiResponse(responseCode = "400", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
